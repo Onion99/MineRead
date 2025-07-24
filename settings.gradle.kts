@@ -33,4 +33,4 @@ dependencyResolutionManagement {
 include(":composeApp")
 include(":server")
 include(":shared")
-include(":build-logic")
+include(":ui-theme")
