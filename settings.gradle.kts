@@ -35,4 +35,4 @@ plugins {
 include(":composeApp")
 include(":server")
 include(":shared")
-include(":ui-theme")
+include(":build-logic")
