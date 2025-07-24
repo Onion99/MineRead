@@ -25,45 +25,20 @@ fun org.gradle.api.Project.configureUiModule(
 
         named("commonMain") {
             dependencies {
-                implementation(project(":data-core"))
-                implementation(project(":data"))
-                implementation(project(":scaffold"))
-                implementation(project(":feature-template"))
-                implementation(project(":ui-core"))
-                implementation(project(":ui-media"))
-                implementation(project(":ui-tiling"))
-                implementation(project(":ui-timeline"))
-
                 api(libs.findLibrary("lifecycle-runtime").get())
                 api(libs.findLibrary("lifecycle-runtime-compose").get())
                 api(libs.findLibrary("lifecycle-viewmodel").get())
                 api(libs.findLibrary("lifecycle-viewmodel-compose").get())
-
                 api(libs.findLibrary("compose-components-resources").get())
                 api(libs.findLibrary("compose-runtime").get())
                 api(libs.findLibrary("compose-animation").get())
                 api(libs.findLibrary("compose-material-icons-extended").get())
                 api(libs.findLibrary("compose-material3").get())
                 api(libs.findLibrary("compose-foundation-layout").get())
-
                 api(libs.findLibrary("androidx-graphics-core").get())
                 api(libs.findLibrary("androidx-graphics-path").get())
                 api(libs.findLibrary("androidx-graphics-shapes").get())
-
                 api(libs.findLibrary("kotlinx-coroutines-core").get())
-
-                api(libs.findLibrary("savedstate-savedstate").get())
-                api(libs.findLibrary("savedstate-compose").get())
-
-                api(libs.findLibrary("tunjid-mutator-core-common").get())
-                api(libs.findLibrary("tunjid-mutator-coroutines-common").get())
-
-                api(libs.findLibrary("tunjid-composables").get())
-
-                api(libs.findLibrary("tunjid-treenav-compose").get())
-                api(libs.findLibrary("tunjid-treenav-compose-threepane").get())
-                api(libs.findLibrary("tunjid-treenav-core").get())
-                api(libs.findLibrary("tunjid-treenav-strings").get())
             }
         }
         named("androidMain") {
@@ -74,10 +49,6 @@ fun org.gradle.api.Project.configureUiModule(
             dependencies {
             }
         }
-//        named("commonTest") {
-//            dependencies {
-//                implementation(kotlin("test"))
-//            }
-//        }
+
     }
 }

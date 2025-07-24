@@ -28,40 +28,17 @@ kotlin {
     sourceSets {
         named("commonMain") {
             dependencies {
-                implementation(project(":data-core"))
 
-                implementation(libs.compose.components.resources)
-                implementation(libs.compose.animation)
-                implementation(libs.compose.foundation.layout)
-                implementation(libs.compose.foundation.foundation)
-                implementation(libs.compose.material.icons.extended)
-                implementation(libs.compose.material3)
-                implementation(libs.compose.runtime)
-                implementation(libs.compose.ui.ui)
-
-                implementation(libs.androidx.graphics.core)
-                implementation(libs.androidx.graphics.path)
-                implementation(libs.androidx.graphics.shapes)
-
-                implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.kotlinx.datetime)
-
-                implementation(libs.tunjid.composables)
-
-                implementation(libs.tunjid.treenav.compose)
-                implementation(libs.tunjid.treenav.compose.threepane)
-                implementation(libs.tunjid.treenav.core)
-                implementation(libs.tunjid.treenav.strings)
             }
         }
         named("androidMain") {
             dependencies {
-                implementation(libs.ktor.client.android)
+                //implementation(libs.ktor.client.android)
             }
         }
         named("desktopMain") {
             dependencies {
-                implementation(libs.ktor.client.java)
+                //implementation(libs.ktor.client.java)
             }
         }
 //        named("iosMain") {

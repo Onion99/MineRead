@@ -1,3 +1,11 @@
+
+### Module
+
+*build-logic* 模块是用来编写自己的 Gradle "约定插件"（convention plugins）的
+
+
+### Other
+
 This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop, Server.
 
 * `/composeApp` is for code that will be shared across your Compose Multiplatform applications.

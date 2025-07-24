@@ -19,5 +19,6 @@ plugins {
 }
 
 kotlin {
+    // 配置共用的依赖,确保在toml文件中存在
     configureKotlinMultiplatform(this)
 }
