@@ -7,6 +7,7 @@ android {
 
     defaultConfig {
         lint.targetSdk = 35
+        minSdk = 24
     }
 
     sourceSets {

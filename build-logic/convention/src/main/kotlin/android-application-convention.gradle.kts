@@ -1,3 +1,5 @@
+import ext.libs
+
 /*
  *    Copyright 2024 Adetunji Dahunsi
  *
@@ -23,6 +25,7 @@ android {
 
     defaultConfig {
         targetSdk = 35
+        minSdk = 24
     }
 }
 
