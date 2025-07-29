@@ -130,3 +130,14 @@ compose.desktop {
         }
     }
 }
+
+// ------------------------------------------------------------------------
+// 配置Run脚本
+// ------------------------------------------------------------------------
+afterEvaluate {
+    val run = tasks.named("run")
+    // 运行 桌面程序 Debug
+    val desktopRunDebug by tasks.registering {
+        dependsOn(run)
+    }
+}
