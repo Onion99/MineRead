@@ -3,19 +3,20 @@
  * License: MIT License
  */
 
-package ui.theme
+package com.onion.theme.style
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import mineread.ui_theme.generated.resources.Res
+import mineread.ui_theme.generated.resources.metropolis_bold
+import mineread.ui_theme.generated.resources.metropolis_light
+import mineread.ui_theme.generated.resources.metropolis_medium
+import mineread.ui_theme.generated.resources.metropolis_regular
+import mineread.ui_theme.generated.resources.metropolis_semibold
 import org.jetbrains.compose.resources.Font
-import zzzarchive.composeapp.generated.resources.Res
-import zzzarchive.composeapp.generated.resources.noto_sans_black
-import zzzarchive.composeapp.generated.resources.noto_sans_bold
-import zzzarchive.composeapp.generated.resources.noto_sans_medium
-import zzzarchive.composeapp.generated.resources.noto_sans_regular
 
 data class Typography(
     val displayLarge: TextStyle = TextStyle(),
@@ -38,10 +39,11 @@ data class Typography(
 @Composable
 fun provideTypography(scale: Float = 1f): Typography {
     val noToSansTc = FontFamily(
-        Font(Res.font.noto_sans_regular, FontWeight.Normal),
-        Font(Res.font.noto_sans_medium, FontWeight.Medium),
-        Font(Res.font.noto_sans_bold, FontWeight.Bold),
-        Font(Res.font.noto_sans_black, FontWeight.Black)
+        Font(Res.font.metropolis_regular, FontWeight.Normal),
+        Font(Res.font.metropolis_medium, FontWeight.Medium),
+        Font(Res.font.metropolis_bold, FontWeight.Bold),
+        Font(Res.font.metropolis_light, FontWeight.Bold),
+        Font(Res.font.metropolis_semibold, FontWeight.Black)
     )
 
     return Typography(

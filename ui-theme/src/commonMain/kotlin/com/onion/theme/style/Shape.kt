@@ -3,15 +3,12 @@
  * License: MIT License
  */
 
-package ui.theme
+package com.onion.theme.style
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.unit.dp
 
-/**
- * Ref:
- * [felipecastilhos / pokedex-android](https://github.com/felipecastilhos/pokedex-android)
- */
+
 data class Shape(
     val r100: RoundedCornerShape,
     val r200: RoundedCornerShape,

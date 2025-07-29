@@ -3,7 +3,7 @@
  * License: MIT License
  */
 
-package ui.theme
+package com.onion.theme.style
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp

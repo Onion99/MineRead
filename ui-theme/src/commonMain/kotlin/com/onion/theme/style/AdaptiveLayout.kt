@@ -3,7 +3,7 @@
  * License: MIT
  */
 
-package ui.theme
+package com.onion.theme.style
 
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable

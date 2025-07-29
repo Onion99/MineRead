@@ -68,9 +68,15 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation(libs.androidx.lifecycle.viewmodel)
-            implementation(libs.androidx.lifecycle.runtimeCompose)
+            // ---- App Runtime ------
+            implementation(libs.runtime.shapes)
+            implementation(libs.runtime.navigation)
+            implementation(libs.runtime.savedstate)
+            implementation(libs.runtime.viewmodel)
+            implementation(libs.runtime.lifecycle)
+            // ---- project module ------
             implementation(projects.shared)
+            implementation(projects.uiTheme)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

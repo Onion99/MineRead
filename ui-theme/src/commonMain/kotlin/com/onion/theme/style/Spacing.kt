@@ -4,15 +4,11 @@
  * Modify by mrfatworm 2024
  */
 
-package ui.theme
+package com.onion.theme.style
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-/**
- * Ref:
- * [felipecastilhos / pokedex-android](https://github.com/felipecastilhos/pokedex-android)
- */
 class Spacing(
     val s100: Dp,
     val s200: Dp,

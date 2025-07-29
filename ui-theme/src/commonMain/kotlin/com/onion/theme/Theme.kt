@@ -18,6 +18,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.onion.theme.state.AdaptiveLayoutType
 import com.onion.theme.state.ContentType
+import com.onion.theme.style.AdaptiveLayout
+import com.onion.theme.style.ColorScheme
+import com.onion.theme.style.Shape
+import com.onion.theme.style.Size
+import com.onion.theme.style.Spacing
+import com.onion.theme.style.Typography
+import com.onion.theme.style.darkScheme
+import com.onion.theme.style.lightScheme
+import com.onion.theme.style.provideSize
+import com.onion.theme.style.provideTypography
 
 /**
  * Ref:
@@ -80,7 +90,7 @@ fun AppTheme(content: @Composable () -> Unit) {
     val fixedSize = mutableStateOf(provideSize(uiScale.value))
 
     AdaptiveLayout(adaptiveLayoutType, contentType)
-    SystemAppearance(!isDark.value)
+    //SystemAppearance(!isDark.value)
 
     CompositionLocalProvider(
         localColorScheme provides colorScheme,
@@ -104,5 +114,5 @@ fun AppTheme(content: @Composable () -> Unit) {
     }
 }
 
-@Composable
-internal expect fun SystemAppearance(isDark: Boolean)
+//@Composable
+//internal expect fun SystemAppearance(isDark: Boolean)
