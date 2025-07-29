@@ -10,8 +10,8 @@ import androidx.navigation.NavHostController
 
 class NavActions(private val navController: NavHostController) {
 
-    fun navigationTo(destination: Screen) {
-        navController.navigate(destination.route)
+    fun navigationTo(destination: RoutePage) {
+        navController.navigate(destination.name)
     }
 
     fun navigationToRoute(route: String) {
@@ -22,13 +22,14 @@ class NavActions(private val navController: NavHostController) {
         navController.popBackStack()
     }
 
-    fun popAndNavigation(destination: Screen) {
-        navController.navigate(destination.route) {
-            popUpTo(navController.graph.findStartDestination().route ?: MainFlow.Home.route) {
+    // ------------------------------------------------------------------------
+    // 退出当前和进入新页面
+    // ------------------------------------------------------------------------
+    fun popAndNavigation(destination: RoutePage) {
+        navController.navigate(destination.name) {
+            popUpTo(navController.graph.findStartDestination().route!!) {
                 this.inclusive = true
             }
         }
     }
 }
-
-
