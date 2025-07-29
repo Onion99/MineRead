@@ -19,5 +19,5 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun MainScreen() {
-    Box(modifier = Modifier.background(Color.Red))
+    Box(modifier = Modifier.background(Color.Red).fillMaxSize())
 }

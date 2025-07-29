@@ -23,5 +23,5 @@ fun SplashScreen(startMainFlow: () -> Unit) {
         delay(1000)
         startMainFlow()
     }
-    Box(modifier = Modifier.background(Color.Blue))
+    Box(modifier = Modifier.background(Color.Blue).fillMaxSize())
 }

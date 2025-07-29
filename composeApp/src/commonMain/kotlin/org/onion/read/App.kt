@@ -38,9 +38,10 @@ fun App() {
             navController = rootNavController,
             startDestination = RootFlow.MainContainer.route
         ) {
-            composable(RootFlow.Splash.route) {
+            // ---- 开屏页,CPM启动会有一阵子白屏,还是依据具体平台定制化比较合理 ------
+            /*composable(RootFlow.Splash.route) {
                 SplashScreen(startMainFlow = { rootNavActions.popAndNavigation(RootFlow.MainContainer) })
-            }
+            }*/
             composable(RootFlow.MainContainer.route) {
                 MainScreen()
             }
