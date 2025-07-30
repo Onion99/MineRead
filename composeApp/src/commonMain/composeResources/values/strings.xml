@@ -3,4 +3,6 @@
     <string name="home">Home</string>
     <string name="setting">Setting</string>
     <string name="unknown">unknown</string>
+    <string name="light_theme">Light Theme</string>
+    <string name="dark_theme">Dark Theme</string>
 </resources>

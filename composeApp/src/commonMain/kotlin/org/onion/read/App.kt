@@ -22,14 +22,14 @@ fun App() {
         }
         NavHost(
             navController = rootNavController,
-            startDestination = RootRoute.MainContainer.name
+            startDestination = RootRoute.Splash.name
         ) {
             // ---- 开屏页,CPM启动会有一阵子白屏,还是依据具体平台定制化比较合理 ------
             composable(RootRoute.Splash.name) {
                 SplashScreen(startMainFlow = { rootNavActions.popAndNavigation(RootRoute.MainContainer) })
             }
             composable(RootRoute.MainContainer.name) {
-                MainScreen()
+                MainScreen(rootNavActions)
             }
         }
     }
