@@ -22,6 +22,8 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.NavigationRailItemDefaults
 import androidx.compose.material3.Text
@@ -169,7 +171,7 @@ fun BottomNavigationBar(onThemeChanged: () -> Unit){
     NavigationBar(modifier = Modifier.fillMaxWidth(), containerColor = AppTheme.colors.surface) {
         NAV_BOTTOM_ITEMS.forEach { routePage ->
             val isSelected = true
-            NavigationRailItem(
+            NavigationBarItem(
                 selected = false, onClick = {
                 }, icon = {
                     Icon(
@@ -181,7 +183,7 @@ fun BottomNavigationBar(onThemeChanged: () -> Unit){
                         text = stringResource(routePage.textRes),
                         style = if (isSelected) AppTheme.typography.labelMedium else AppTheme.typography.labelSmall
                     )
-                }, colors = navigationRailItemColors()
+                }, colors = navigationBarItemColors()
             )
         }
     }
@@ -191,6 +193,15 @@ fun BottomNavigationBar(onThemeChanged: () -> Unit){
 private fun navigationRailItemColors() = NavigationRailItemDefaults.colors(
     selectedIconColor = AppTheme.colors.onPrimaryContainer,
     selectedTextColor = AppTheme.colors.onSurfaceContainer,
+    indicatorColor = AppTheme.colors.primaryContainer,
+    unselectedIconColor = AppTheme.colors.onSurfaceVariant,
+    unselectedTextColor = AppTheme.colors.onSurfaceVariant
+)
+
+@Composable
+private fun navigationBarItemColors() = NavigationBarItemDefaults.colors(
+    selectedIconColor = AppTheme.colors.onPrimaryContainer,
+    selectedTextColor = AppTheme.colors.onSurface,
     indicatorColor = AppTheme.colors.primaryContainer,
     unselectedIconColor = AppTheme.colors.onSurfaceVariant,
     unselectedTextColor = AppTheme.colors.onSurfaceVariant
