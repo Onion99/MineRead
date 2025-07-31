@@ -3,21 +3,16 @@ package org.onion.read.ui.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import kotlinx.coroutines.delay
+import org.onion.read.ui.navigation.route.DetailRoute
 import org.onion.read.ui.navigation.route.RootRoute
 
 
-fun NavGraphBuilder.splashScreen(autoToMainPage: () -> Unit){
-    composable(RootRoute.Splash.name) {
-        LaunchedEffect(true) {
-            delay(1000)
-            autoToMainPage()
-        }
-        Box(modifier = Modifier.background(Color.Red).fillMaxSize())
+fun NavGraphBuilder.copyScreen(){
+    composable(DetailRoute.Home.name) {
+        Box(modifier = Modifier.background(Color.Blue).fillMaxSize())
     }
 }

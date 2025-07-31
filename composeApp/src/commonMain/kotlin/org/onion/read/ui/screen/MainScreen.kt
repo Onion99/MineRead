@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -29,17 +30,22 @@ import androidx.compose.material3.NavigationRailItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.onion.theme.helper.verticalSafePadding
 import com.onion.theme.state.AdaptiveLayoutType
+import kotlinx.coroutines.delay
 import mineread.composeapp.generated.resources.Res
 import mineread.composeapp.generated.resources.dark_theme
 import mineread.composeapp.generated.resources.ic_moon
@@ -48,31 +54,34 @@ import mineread.composeapp.generated.resources.light_theme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.onion.read.ui.navigation.NavActions
+import org.onion.read.ui.navigation.graph.homeNavGraph
+import org.onion.read.ui.navigation.route.MainRoute
 import org.onion.read.ui.navigation.route.NAV_BOTTOM_ITEMS
+import org.onion.read.ui.navigation.route.RootRoute
 import ui.theme.AppTheme
 
-@Composable
-fun MainScreen(rootNavActions: NavActions) {
-    val mainFunNavController = rememberNavController()
-    val mainFunNavActions = remember(mainFunNavController) {
-        NavActions(mainFunNavController)
-    }
-    val navBackStackEntry by mainFunNavController.currentBackStackEntryAsState()
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val coroutineScope = rememberCoroutineScope()
-    // ---- 当前路由所在的位置,堆栈层应该是 -> Splash,Main,Home,当前位置 ------
-    val currentRoute = mainFunNavController.currentBackStack.value.getOrNull(3)?.destination?.route
-    val selectedMainRoute = NAV_BOTTOM_ITEMS.forEach { routePage ->
-        routePage.name == currentRoute
-    }
-    ModalNavigationDrawer(
-        drawerContent = {
-            ModalNavigationContent()
-        },
-        drawerState = drawerState,
-        gesturesEnabled = false
-    ){
-        MainContent()
+
+fun NavGraphBuilder.mainScreen(){
+    composable(RootRoute.MainRoute.name) {
+        val mainFunNavController = rememberNavController()
+        val mainFunNavActions = remember(mainFunNavController) {
+            NavActions(mainFunNavController)
+        }
+        val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+        // ---- 当前路由所在的位置,堆栈层应该是 -> Splash,Main,Home,当前位置 ------
+        val currentRoute = mainFunNavController.currentBackStack.value.getOrNull(3)?.destination?.route
+        val selectedTabRoute = NAV_BOTTOM_ITEMS.forEach { routePage ->
+            routePage.name == currentRoute
+        }
+        ModalNavigationDrawer(
+            drawerContent = {
+                ModalNavigationContent()
+            },
+            drawerState = drawerState,
+            gesturesEnabled = false
+        ){
+            MainContent(mainFunNavController,mainFunNavActions)
+        }
     }
 }
 
@@ -98,9 +107,16 @@ fun ModalNavigationContent(){
 
 // ------------------------------------------------------------------------
 // 主导航栏
+// 1. route = MainFlow.Home.route•这是什么？ 这是整个导航子图（文件夹）的入口路由。•
+// 作用是什么？ 当你想从应用的其他地方跳转到“主页”这个功能模块时，你必须导航到这个 route。
+// 例如，如果你的应用有一个登录流程，登录成功后，你会调用 navController.navigate(MainFlow.Home.route)。
+// 关键点： 你导航到的是整个子图的 route，而不是子图内部某个具体屏幕的 route。
+// 导航组件接收到这个 route 后，就知道要进入这个 navigation 代码块定义的范围。
+// 2. startDestination = MainFlow.Home.startScreen.route•这是什么？ 这是这个导航子图的起始目标（默认屏幕）。
+// 作用是什么？ 一旦通过 MainFlow.Home.route 进入了这个导航子图，导航组件会立即、自动地为你显示 startDestination 所指向的那个屏幕。
 // ------------------------------------------------------------------------
 @Composable
-fun MainContent(){
+fun MainContent(mainFunNavController: NavHostController, mainNavActions: NavActions){
     Column(Modifier.fillMaxSize()) {
         Row(modifier = Modifier.weight(1f)) {
             AnimatedVisibility(
@@ -111,12 +127,17 @@ fun MainContent(){
                         .padding(verticalSafePadding()),
                     onThemeChanged = {}
                 )
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-
-                }
+            }
+            NavHost(
+                modifier = Modifier.widthIn(max = AppTheme.size.maxContainerWidth),
+                navController = mainFunNavController,
+                startDestination = MainRoute.HomeRoute.name
+            ){
+                // ------------------------------------------------------------------------
+                // navigation(...) 函数用于创建嵌套的导航图（Nested Navigation Graph），或者可以理解为“导航子图”。
+                // 想象一下你的应用导航结构像一个文件系统：•NavHost 是根目录 C:/。•composable("screen_route") 是根目录下的一个文件，比如 C:/readme.txt。•navigation(...) 则是在根目录下创建的一个文件夹，比如 C:/Users/。这个文件夹本身有自己的路径（route），并且当你进入这个文件夹时，它会自动打开一个默认的文件（startDestination）
+                // ------------------------------------------------------------------------
+                homeNavGraph(mainNavActions)
             }
         }
         AnimatedVisibility(visible = AppTheme.adaptiveLayoutType == AdaptiveLayoutType.Compact) {
@@ -124,11 +145,11 @@ fun MainContent(){
         }
     }
 }
-
 @Composable
 fun SlideNavigationBar(modifier: Modifier,onThemeChanged: () -> Unit){
     Column(
         modifier
+
             .border(AppTheme.size.borderWidth, AppTheme.colors.border, CircleShape)
             .background(AppTheme.colors.surfaceContainer, CircleShape).widthIn(min = 80.dp)
             .padding(vertical = AppTheme.spacing.s400).selectableGroup(),

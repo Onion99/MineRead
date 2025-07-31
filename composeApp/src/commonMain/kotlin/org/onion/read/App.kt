@@ -8,8 +8,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 import org.onion.read.ui.navigation.NavActions
 import org.onion.read.ui.navigation.route.RootRoute
-import org.onion.read.ui.screen.MainScreen
-import org.onion.read.ui.screen.SplashScreen
+import org.onion.read.ui.screen.mainScreen
+import org.onion.read.ui.screen.splashScreen
 import ui.theme.AppTheme
 
 @Composable
@@ -25,12 +25,9 @@ fun App() {
             startDestination = RootRoute.Splash.name
         ) {
             // ---- 开屏页,CPM启动会有一阵子白屏,还是依据具体平台定制化比较合理 ------
-            composable(RootRoute.Splash.name) {
-                SplashScreen(startMainFlow = { rootNavActions.popAndNavigation(RootRoute.MainContainer) })
-            }
-            composable(RootRoute.MainContainer.name) {
-                MainScreen(rootNavActions)
-            }
+            splashScreen(autoToMainPage = { rootNavActions.popAndNavigation(RootRoute.MainRoute) })
+            // ---- 首页架构容器 ------
+            mainScreen()
         }
     }
 }
