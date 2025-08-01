@@ -29,6 +29,9 @@ kotlin {
                 implementation(libs.sandwich)
                 implementation(libs.sandwich.ktor)
                 implementation(libs.sandwich.ktorfit)
+
+                implementation(projects.dataModel)
+
             }
         }
         named("androidMain") {

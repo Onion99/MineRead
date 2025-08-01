@@ -15,6 +15,7 @@ import org.koin.dsl.module
 val networkModule  = module {
     single {
         HttpClient() {
+            // 内容协商，用于自动的 JSON/XML 等格式的序列化和反序列化
             install(ContentNegotiation) {
                 json(Json {
                     prettyPrint = true
@@ -23,6 +24,7 @@ val networkModule  = module {
                     explicitNulls = false
                 })
             }
+            // 自动打印网络请求和响应的详细日志
             install(Logging) {
                 level = LogLevel.INFO
                 logger = object : Logger {
@@ -31,6 +33,7 @@ val networkModule  = module {
                     }
                 }
             }
+            // 配置全局或单个请求的超时时间
             install(HttpTimeout) {
                 requestTimeoutMillis = 10000L
             }
