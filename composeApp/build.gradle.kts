@@ -68,6 +68,9 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            // ---- di ------
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose.viewmodel)
             // ---- App Runtime ------
             implementation(libs.runtime.shapes)
             implementation(libs.runtime.navigation)
@@ -77,6 +80,7 @@ kotlin {
             // ---- project module ------
             implementation(projects.shared)
             implementation(projects.uiTheme)
+            implementation(projects.dataNetwork)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

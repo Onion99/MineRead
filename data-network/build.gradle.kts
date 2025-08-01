@@ -17,7 +17,14 @@ kotlin {
     sourceSets {
         named("commonMain") {
             dependencies {
+                // ---- di ------
                 implementation(libs.koin.core)
+                // ---- ktor ------
+                implementation(libs.ktor.core)
+                implementation(libs.ktor.client.contentNegotiation)
+                implementation(libs.ktor.client.logging)
+                implementation(libs.ktor.client.resources)
+                implementation(libs.ktor.serialization.kotlinx.json)
                 // ---- sandwich ------
                 implementation(libs.sandwich)
                 implementation(libs.sandwich.ktor)
