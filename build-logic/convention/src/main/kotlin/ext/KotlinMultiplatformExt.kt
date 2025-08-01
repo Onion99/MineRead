@@ -30,6 +30,11 @@ fun Project.configureKotlinMultiplatform(
             iosArm64(),
             iosSimulatorArm64()
         )
+        // 添加web平台,避免不支持
+        @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
+        wasmJs {
+            browser() // 或者 nodejs()，根据你的需求
+        }
         sourceSets.apply {
             all {
                 languageSettings.apply {
