@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 plugins {
     id("android-library-convention")
     id("kotlin-library-convention")
+    kotlin("plugin.serialization")
 }
 android {
     namespace = "com.onion.data.model"

@@ -1,6 +1,9 @@
 package com.onion.model
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class BookSource(
     // 地址，包括 http/https
     var bookSourceUrl: String = "",
