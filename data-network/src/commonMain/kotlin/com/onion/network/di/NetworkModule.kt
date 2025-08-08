@@ -2,6 +2,7 @@ package com.onion.network.di
 
 import com.onion.network.http.getPlatformHttpEngine
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.HttpRedirect
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
@@ -12,6 +13,7 @@ import io.ktor.http.takeFrom
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
+import kotlin.time.Duration.Companion.seconds
 
 val networkModule  = module {
     single {
@@ -40,7 +42,13 @@ fun getHttpClient() = HttpClient(getPlatformHttpEngine()) {
     }
     // 配置全局或单个请求的超时时间
     install(HttpTimeout) {
-        requestTimeoutMillis = 10000L
+        connectTimeoutMillis  = 15.seconds.inWholeMilliseconds // connectTimeout
+        socketTimeoutMillis   = 60.seconds.inWholeMilliseconds // readTimeout
+        requestTimeoutMillis  = 60.seconds.inWholeMilliseconds // callTimeout
+    }
+    install(HttpRedirect) {
+        checkHttpMethod = true // Default is true
+        allowHttpsDowngrade = false // Default is false, equivalent to followSslRedirects=true
     }
     /*defaultRequest {
         url {
