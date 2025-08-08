@@ -83,7 +83,9 @@ kotlin {
             implementation(projects.dataNetwork)
         }
         commonTest.dependencies {
+            implementation(projects.dataNetwork)
             implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutinesTest)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

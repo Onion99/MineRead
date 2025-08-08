@@ -20,28 +20,27 @@ kotlin {
                 // ---- di ------
                 implementation(libs.koin.core)
                 // ---- ktor ------
-                implementation(libs.ktor.core)
-                implementation(libs.ktor.client.contentNegotiation)
-                implementation(libs.ktor.client.logging)
-                implementation(libs.ktor.client.resources)
-                implementation(libs.ktor.serialization.kotlinx.json)
+                api(libs.ktor.core)
+                api(libs.ktor.client.contentNegotiation)
+                api(libs.ktor.client.contentNegotiation)
+                api(libs.ktor.client.logging)
+                api(libs.ktor.client.resources)
+                api(libs.ktor.serialization.kotlinx.json)
                 // ---- sandwich ------
-                implementation(libs.sandwich)
-                implementation(libs.sandwich.ktor)
-                implementation(libs.sandwich.ktorfit)
-
-                implementation(projects.dataModel)
-
+                api(libs.sandwich)
+                api(libs.sandwich.ktor)
+                api(libs.sandwich.ktorfit)
+                api(projects.dataModel)
             }
         }
         named("androidMain") {
             dependencies {
-                //implementation(libs.ktor.client.android)
+                api(libs.ktor.client.okhttp)
             }
         }
         named("desktopMain") {
             dependencies {
-                //implementation(libs.ktor.client.java)
+                api(libs.ktor.client.okhttp)
             }
         }
     }
