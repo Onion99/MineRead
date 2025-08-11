@@ -36,11 +36,14 @@ class ComposeAppCommonTest {
         }
         // 发起请求并获取响应
         println("url-> $requestUrl")
-        val response = httpClient.getApiResponse<List<BookSource>>(requestUrl) {
+        httpClient.getApiResponse<List<BookSource>>(requestUrl) {
             if (noUaRequest) {
                 header(UA_NAME, "null")
             }
+        }.onSuccess {
+            data.forEach {
+                println("source-> ${it.bookSourceName}")
+            }
         }
-        println("response-> $response")
     }
 }
