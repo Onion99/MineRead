@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 plugins {
     id("android-library-convention")
     id("kotlin-library-convention")
-    kotlin("plugin.serialization")
+    alias(libs.plugins.kotlin.serialization)
 }
 android {
     namespace = "com.onion.data.model"
@@ -16,18 +16,9 @@ android {
 kotlin {
 
     sourceSets {
-        named("commonMain") {
+        val commonMain by getting {
             dependencies {
-            }
-        }
-        named("androidMain") {
-            dependencies {
-                //implementation(libs.ktor.client.android)
-            }
-        }
-        named("desktopMain") {
-            dependencies {
-                //implementation(libs.ktor.client.java)
+                implementation(libs.ktor.client.serialization)
             }
         }
     }
