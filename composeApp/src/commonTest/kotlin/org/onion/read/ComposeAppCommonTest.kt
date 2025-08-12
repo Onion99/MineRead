@@ -1,5 +1,8 @@
 package org.onion.read
 
+import com.dokar.quickjs.binding.define
+import com.dokar.quickjs.binding.function
+import com.dokar.quickjs.quickJs
 import com.onion.model.BookSource
 import com.onion.network.constant.UA_NAME
 import com.onion.network.di.getHttpClient
@@ -44,6 +47,26 @@ class ComposeAppCommonTest {
             data.forEach {
                 println("source-> ${it.bookSourceName}")
             }
+        }
+    }
+
+    @Test
+    fun testQuickJs() = runTest {
+        quickJs {
+            define("console") {
+                function("log") { args ->
+                    println(args.joinToString(" "))
+                }
+            }
+
+
+            function<String, String>("greet") { "Hello, $it!" }
+
+            evaluate<Any?>(
+                """
+        console.log("Hello from JavaScript!")
+        """.trimIndent()
+            )
         }
     }
 }

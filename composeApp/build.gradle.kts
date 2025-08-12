@@ -34,7 +34,7 @@ kotlin {
     
     jvm("desktop")
     
-    @OptIn(ExperimentalWasmDsl::class)
+    /*@OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         outputModuleName.set("composeApp")
         browser {
@@ -52,7 +52,7 @@ kotlin {
             }
         }
         binaries.executable()
-    }
+    }*/
     
     sourceSets {
         val desktopMain by getting
@@ -81,11 +81,13 @@ kotlin {
             implementation(projects.shared)
             implementation(projects.uiTheme)
             implementation(projects.dataNetwork)
+            implementation(libs.quickjs.kt)
         }
         commonTest.dependencies {
             implementation(projects.dataNetwork)
             implementation(libs.kotlin.test)
             implementation(libs.kotlinx.coroutinesTest)
+            implementation(libs.quickjs.kt)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
