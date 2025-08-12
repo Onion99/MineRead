@@ -7,13 +7,12 @@ import com.onion.model.BookKind
 import com.onion.model.BookSource
 import com.onion.network.constant.UA_NAME
 import com.onion.network.di.getHttpClient
-import com.onion.network.http.getPlatformHttpEngine
+import com.skydoves.sandwich.getOrElse
 import com.skydoves.sandwich.ktor.getApiResponse
-import com.skydoves.sandwich.onFailure
 import com.skydoves.sandwich.onSuccess
 import io.ktor.client.request.header
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
 import kotlin.test.Test
@@ -56,7 +55,7 @@ class ComposeAppCommonTest {
                 header(UA_NAME, "null")
             }
         }.onSuccess {
-            data.get(4).run {
+            data.get(1).run {
                 val ruler = exploreUrl ?: ""
                 var jsStr = ruler
                 if (ruler.startsWith("<js>", true) || ruler.startsWith("@js:", true)){
@@ -73,6 +72,12 @@ class ComposeAppCommonTest {
                             function("getVariable"){
                                 ""
                             }
+                            function("key"){
+                                bookSourceUrl
+                            }
+                            function("getLoginInfoMap"){
+                                mapOf<String, String>()
+                            }
                         }
                         define("cookie"){
                             function("getCookie"){
@@ -87,10 +92,14 @@ class ComposeAppCommonTest {
                                 ""
                             }
                             function("ajax"){
-                                ""
+                                println("ajax -> $it")
+                                val result = runBlocking {
+                                    httpClient.getApiResponse<String>(it.first().toString())
+                                }
+                                result.getOrElse { "" }
                             }
                             function("longToast"){
-                                println("js toast-> $it")
+                                println("js toast -> $it")
                                 ""
                             }
                         }
@@ -103,7 +112,7 @@ class ComposeAppCommonTest {
                         function("gets_key"){ args ->
                             ""
                         }
-                        val result = evaluate<Any?>(jsStr.trimIndent())
+                        val result = evaluate<Any?>(jsStr.trim())
                         httpJson.decodeFromString<List<BookKind>>(result.toString()).forEach { bookKind ->
                             println("bookKind-> $bookKind")
                         }
