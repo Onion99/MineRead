@@ -1,5 +1,6 @@
 package com.onion.model
 
+import com.onion.model.js.BookSourceJS
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -20,8 +21,6 @@ data class BookSource(
     var enabled: Boolean = true,
     // 启用发现
     var enabledExplore: Boolean = true,
-    // js库
-    var jsLib: String? = null,
     // 登录检测js
     var loginCheckJs: String? = null,
     // 封面解密js
@@ -40,4 +39,9 @@ data class BookSource(
     var exploreUrl: String? = null,
     // 发现筛选规则
     var exploreScreen: String? = null,
-)
+    override var loginUrl: String? = null,
+    override var loginUi: String? = null,
+    override var header: String? = null,
+    override var enabledCookieJar: Boolean? = null,
+    override var jsLib: String? = null,
+): BookSourceJS
