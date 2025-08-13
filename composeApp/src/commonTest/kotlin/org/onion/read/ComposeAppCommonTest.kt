@@ -55,7 +55,7 @@ class ComposeAppCommonTest {
                 header(UA_NAME, "null")
             }
         }.onSuccess {
-            data.get(1).run {
+            data.get(0).run {
                 val ruler = exploreUrl ?: ""
                 var jsStr = ruler
                 if (ruler.startsWith("<js>", true) || ruler.startsWith("@js:", true)){
@@ -65,7 +65,8 @@ class ComposeAppCommonTest {
                         ruler.substring(4, ruler.lastIndexOf("<"))
                     }
                 }
-                println("rule-> $jsStr")
+                println("sourceUrl-> $bookSourceUrl")
+                val finalBookSourceUrl = bookSourceUrlRegex.find(bookSourceUrl)?.groupValues?.first() ?: ""
                 launch {
                     quickJs {
                         define("source"){
@@ -113,14 +114,48 @@ class ComposeAppCommonTest {
                             ""
                         }
                         val result = evaluate<Any?>(jsStr.trim())
-                        httpJson.decodeFromString<List<BookKind>>(result.toString()).forEach { bookKind ->
-                            println("bookKind-> $bookKind")
+                        val kindList = httpJson.decodeFromString<List<BookKind>>(result.toString())
+                        kindList.get(3).let { kind ->
+                            println("kind-> ${kind}")
+                            // 解析还原JS请求地址
+                            val bookKindMatch = bookKindRegex.findAll(kind.url?:"")
+                            // 输出需要替换占位的内容
+                            bookKindMatch
+                                .map { it.groupValues[1] } // groupValues[0]是完整匹配(如"{{page}}")，[1]是第一个捕获组的内容(如"page")
+                                .toList().let { placeContent ->
+                                    println("kind replace content -> $placeContent")
+                                }
+                            // 替换占位请求参数
+                            val requestParams = mapOf(
+                                "page" to 1
+                            )
+                            val finalKindUrl = bookKindRegex.replace(kind.url ?: ""){ matchResult ->
+                                // groupValues[1] 对应 `(.+?)` 捕获的内容，例如 "page",0则是完整匹配 {{page}}
+                                val key = matchResult.groupValues[1]
+                                val value = requestParams[key]?.toString()
+                                value ?: matchResult.value
+                            }
+                            val requestBookKindUrl = finalBookSourceUrl+finalKindUrl
+                            println("final kind url -> $requestBookKindUrl")
+                            httpClient.getApiResponse<String>(requestBookKindUrl)
                         }
                     }
                 }
             }
         }
     }
+
+    val bookSourceUrlRegex = Regex("""(https?://[^/\s]+)""")
+    // ------------------------------------------------------------------------
+    // \{\{: 匹配字面量的 {{。花括号在正则中有特殊含义，所以需要用反斜杠 \ 来转义。
+    // ( 和 ): 创建一个捕获组。这是关键，因为我们只想要括号里面的内容。
+    // .+?: 这是捕获组的内容。
+    // .: 匹配除换行符外的任何字符。
+    // +: 匹配前面的元素一次或多次。
+    // ?: 使 + 变为非贪婪（non-greedy）模式。这意味着它会匹配尽可能少的字符，直到遇到后面的 }} 为止。如果没有 ?，对于输入 {{a}} and {{b}}，.+ 会贪婪地匹配到 a}} and {{b。
+    // \}\}: 匹配字面量的 }}
+    // ------------------------------------------------------------------------
+    val bookKindRegex = Regex("""\{\{(.+?)\}\}""")
 
     @Test
     fun testQuickJs() = runTest {
