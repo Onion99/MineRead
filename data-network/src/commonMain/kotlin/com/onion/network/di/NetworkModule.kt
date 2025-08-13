@@ -32,14 +32,14 @@ fun getHttpClient() = HttpClient(getPlatformHttpEngine()) {
         })
     }
     // 自动打印网络请求和响应的详细日志
-    install(Logging) {
+    /*install(Logging) {
         level = LogLevel.INFO
         logger = object : Logger {
             override fun log(message: String) {
                 println("Logger Ktor => $message")
             }
         }
-    }
+    }*/
     // 配置全局或单个请求的超时时间
     install(HttpTimeout) {
         connectTimeoutMillis  = 15.seconds.inWholeMilliseconds // connectTimeout
