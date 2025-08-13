@@ -127,7 +127,8 @@ class ComposeAppCommonTest {
                                 }
                             // 替换占位请求参数
                             val requestParams = mapOf(
-                                "page" to 1
+                                "page" to 1,
+                                "source.bookSourceUrl" to "$finalBookSourceUrl/"
                             )
                             val finalKindUrl = bookKindRegex.replace(kind.url ?: ""){ matchResult ->
                                 // groupValues[1] 对应 `(.+?)` 捕获的内容，例如 "page",0则是完整匹配 {{page}}
@@ -135,7 +136,8 @@ class ComposeAppCommonTest {
                                 val value = requestParams[key]?.toString()
                                 value ?: matchResult.value
                             }
-                            val requestBookKindUrl = finalBookSourceUrl+finalKindUrl
+                            val requestBookKindUrl = if(isHttpUrlWithKtor(finalKindUrl)) finalKindUrl else
+                                finalBookSourceUrl+finalKindUrl
                             println("final kind url -> $requestBookKindUrl")
                             httpClient.getApiResponse<String>(requestBookKindUrl)
                         }
@@ -156,6 +158,14 @@ class ComposeAppCommonTest {
     // \}\}: 匹配字面量的 }}
     // ------------------------------------------------------------------------
     val bookKindRegex = Regex("""\{\{(.+?)\}\}""")
+
+
+    fun isHttpUrlWithKtor(urlString: String?): Boolean {
+        if (urlString.isNullOrBlank()) {
+            return false
+        }
+        return urlString.startsWith("http://", ignoreCase = true) || urlString.startsWith("https://", ignoreCase = true)
+    }
 
     @Test
     fun testQuickJs() = runTest {
