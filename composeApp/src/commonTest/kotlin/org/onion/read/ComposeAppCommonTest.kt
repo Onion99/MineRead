@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -139,7 +140,13 @@ class ComposeAppCommonTest {
                             val requestBookKindUrl = if(isHttpUrlWithKtor(finalKindUrl)) finalKindUrl else
                                 finalBookSourceUrl+finalKindUrl
                             println("final kind url -> $requestBookKindUrl")
-                            httpClient.getApiResponse<String>(requestBookKindUrl)
+                            val exploreData = httpClient.getApiResponse<String>(requestBookKindUrl)
+                            define("result"){
+                                exploreData.toString()
+                            }
+                            println("rule explore -> ${ruleExplore!!}")
+                            val contentList = evaluate<Any?>(ruleExplore!!.bookList!!.substring(1))
+                            println("final kind content list -> $contentList")
                         }
                     }
                 }
