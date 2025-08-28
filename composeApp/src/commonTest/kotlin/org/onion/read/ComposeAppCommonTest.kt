@@ -5,9 +5,11 @@ import com.dokar.quickjs.binding.function
 import com.dokar.quickjs.quickJs
 import com.onion.model.BookKind
 import com.onion.model.BookSource
+import com.onion.model.rule.BookListRule
 import com.onion.network.constant.UA_NAME
 import com.onion.network.di.getHttpClient
 import com.skydoves.sandwich.getOrElse
+import com.skydoves.sandwich.getOrThrow
 import com.skydoves.sandwich.ktor.getApiResponse
 import com.skydoves.sandwich.onSuccess
 import io.ktor.client.request.header
@@ -56,7 +58,7 @@ class ComposeAppCommonTest {
                 header(UA_NAME, "null")
             }
         }.onSuccess {
-            data.get(0).run {
+            data.get(2).run {
                 val ruler = exploreUrl ?: ""
                 var jsStr = ruler
                 if (ruler.startsWith("<js>", true) || ruler.startsWith("@js:", true)){
@@ -140,17 +142,18 @@ class ComposeAppCommonTest {
                             val requestBookKindUrl = if(isHttpUrlWithKtor(finalKindUrl)) finalKindUrl else
                                 finalBookSourceUrl+finalKindUrl
                             println("final kind url -> $requestBookKindUrl")
-                            val exploreData = httpClient.getApiResponse<String>(requestBookKindUrl)
-                            define("result"){
-                                exploreData.toString()
-                            }
-                            println("rule explore -> ${ruleExplore!!}")
-                            val contentList = evaluate<Any?>(ruleExplore!!.bookList!!.substring(1))
-                            println("final kind content list -> $contentList")
+                            val exploreData = httpClient.getApiResponse<JsonObject>(requestBookKindUrl).getOrThrow()
+                            getExploreData(exploreData,ruleExplore!!)
                         }
                     }
                 }
             }
+        }
+    }
+
+    fun getExploreData(data:JsonObject,ruleExplore: BookListRule){
+        if(ruleExplore.bookList?.startsWith("$.") == true){
+            ruleExplore.bookList!!.removePrefix("$.")
         }
     }
 
