@@ -17,6 +17,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -151,9 +153,40 @@ class ComposeAppCommonTest {
         }
     }
 
-    fun getExploreData(data:JsonObject,ruleExplore: BookListRule){
-        if(ruleExplore.bookList?.startsWith("$.") == true){
-            ruleExplore.bookList!!.removePrefix("$.")
+    fun getExploreData(data: JsonObject, ruleExplore: BookListRule) {
+        val bookListRule = ruleExplore.bookList ?: return
+        // 规则示例: "$.data.books[*]"
+        val pathSegments = bookListRule.removePrefix("$.").split('.')
+
+        var currentElement: JsonElement = data
+        for (segment in pathSegments) {
+            if (currentElement !is JsonObject) {
+                println("Error: Not a JsonObject, cannot find key '$segment'")
+                return
+            }
+            if (segment.endsWith("[*]")) {
+                val arrayKey = segment.removeSuffix("[*]")
+                val arrayElement = currentElement[arrayKey]
+                if (arrayElement is JsonArray) {
+                    currentElement = arrayElement
+                    break // Assume [*] is the last part of the path
+                } else {
+                    println("Error: Key '$arrayKey' does not point to a JsonArray")
+                    return
+                }
+            } else {
+                currentElement = currentElement[segment] ?: run {
+                    println("Error: Key '$segment' not found")
+                    return
+                }
+            }
+        }
+
+        if (currentElement is JsonArray) {
+            println("Successfully extracted book list: $currentElement")
+            // 在这里处理提取到的JsonArray
+        } else {
+            println("Warning: The final element is not a JsonArray.")
         }
     }
 
